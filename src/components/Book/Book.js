@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import BooksContext from '../../store/books-context';
 import './Book.css';
-// import * as  BooksAPI from '../../BooksAPI';
 
 const Book = props => {
+
+    const { fetchAllBooks, dropDownChanged } = useContext(BooksContext);
+
+    const selectionChangedHandler = (event) => {
+        dropDownChanged(event.target.value, props.id);
+        fetchAllBooks();
+    };
 
     return (
         <li>
@@ -10,7 +17,7 @@ const Book = props => {
                 <div className="book-top">
                     <div className="book-cover" style={{ width: 128, height: 170, backgroundImage: `url("${props.imageLink.thumbnail}")`, backgroundColor: '#cccccc' }}></div>
                     <div className="book-shelf-changer">
-                        <select value={props.shelf || "none"} onChange={(event) => props.changer(event.target.value, props.id)}>
+                        <select value={props.shelf || "none"} onChange={selectionChangedHandler}>
                             <option value="move" disabled>Move to...</option>
                             <option value="currentlyReading">Currently Reading</option>
                             <option value="wantToRead">Want to Read</option>

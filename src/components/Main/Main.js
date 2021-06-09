@@ -1,30 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect} from 'react';
 import './Main.css';
 
 import BookShelf from '../BookShelf/BookShelf';
-
-import * as  BooksAPI from '../../BooksAPI';
 import { Link } from 'react-router-dom';
+import BooksContext from '../../store/books-context';
 
 const Main = props => {
 
-    const [bookListData, setBookListData] = useState([]);
-
-    const fetchAllBooks = () => {
-        BooksAPI.getAll()
-            .then(data => {
-                setBookListData(data);
-            });
-    };
+    const { books, fetchAllBooks } = useContext(BooksContext);
 
     useEffect(() => {
         fetchAllBooks();
-    }, []);
-
-    const selectionChangedHandler = (value, id) => {
-        props.changer(value, id);
-        fetchAllBooks();
-    };
+    }, [fetchAllBooks]);
 
     return (
         <div className="list-books">
@@ -32,10 +19,10 @@ const Main = props => {
                 <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
-                {bookListData && (<div>
-                    <BookShelf changer={selectionChangedHandler} id="currentlyReading" title="Currently Reading" bookData={bookListData} />
-                    <BookShelf changer={selectionChangedHandler} id="wantToRead" title="Want to Read" bookData={bookListData} />
-                    <BookShelf changer={selectionChangedHandler} id="read" title="Read" bookData={bookListData} />
+                {books && (<div>
+                    <BookShelf id="currentlyReading" title="Currently Reading" bookData={books} />
+                    <BookShelf id="wantToRead" title="Want to Read" bookData={books} />
+                    <BookShelf id="read" title="Read" bookData={books} />
                 </div>)}
             </div>
             <div className="open-search">
