@@ -4,11 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import { BooksContextProvider } from './store/books-context';
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <BooksContextProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </BooksContextProvider>,
   document.getElementById('root')
 );
 
