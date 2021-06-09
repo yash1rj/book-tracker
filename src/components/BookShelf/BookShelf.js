@@ -12,6 +12,7 @@ const BookShelf = props => {
         return <Book
             key={book.id}
             id={book.id}
+            changer={props.changer}
             title={book.title}
             authors={book.authors}
             shelf={book.shelf}
@@ -23,7 +24,7 @@ const BookShelf = props => {
             <h2 className="bookshelf-title">{props.title}</h2>
             <div className="bookshelf-books">
                 <ol className="books-grid">
-                    {filteredBooks}
+                    {(!filteredBooks || !filteredBooks.length) ? <h3>Loading...</h3> : filteredBooks}
                 </ol>
             </div>
         </div>
