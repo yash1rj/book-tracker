@@ -1,15 +1,8 @@
 import React from 'react';
 import './Book.css';
-import * as  BooksAPI from '../../BooksAPI';
+// import * as  BooksAPI from '../../BooksAPI';
 
 const Book = props => {
-
-    const selectionChangedHandler = (event) => {
-        // console.log(event.target.value);
-        BooksAPI.update({
-            id: props.id
-        }, event.target.value);
-    };
 
     return (
         <li>
@@ -17,7 +10,7 @@ const Book = props => {
                 <div className="book-top">
                     <div className="book-cover" style={{ width: 128, height: 170, backgroundImage: `url("${props.imageLink.thumbnail}")`, backgroundColor: '#cccccc' }}></div>
                     <div className="book-shelf-changer">
-                        <select value={props.shelf || "none"} onChange={selectionChangedHandler}>
+                        <select value={props.shelf || "none"} onChange={(event) => props.changer(event.target.value, props.id)}>
                             <option value="move" disabled>Move to...</option>
                             <option value="currentlyReading">Currently Reading</option>
                             <option value="wantToRead">Want to Read</option>
