@@ -12,7 +12,6 @@ const BookShelf = props => {
         return <Book
             key={book.id}
             id={book.id}
-            changer={props.changer}
             title={book.title}
             authors={book.authors}
             shelf={book.shelf}

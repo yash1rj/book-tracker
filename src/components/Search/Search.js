@@ -51,7 +51,6 @@ const Search = props => {
             key={book.id}
             id={book.id}
             title={book.title}
-            changer={props.changer}
             authors={book.authors}
             shelf={book.shelf}
             imageLink={book.imageLinks || ""} />)
