@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Search.css';
 import * as  BooksAPI from '../../BooksAPI';
 import Book from '../Book/Book';
+import BooksContext from '../../store/books-context';
 
 const Search = props => {
 
+    const { books } = useContext(BooksContext);
+
     let timeout = 0;
-    const [searchData, setSearchData] = useState();
+    const [matchedBooks, setMatchedBooks] = useState();
     const [errorFlag, setErrorFlag] = useState(0);
 
     let searchResultsRendered;
@@ -26,19 +29,19 @@ const Search = props => {
                             setErrorFlag(1);
                         }
                         else {
-                            setSearchData(data);
+                            setMatchedBooks(data);
                             setErrorFlag(0);
                         }
                     });
             }
             else {
-                setSearchData(null);
+                setMatchedBooks(null);
                 setErrorFlag(0);
             }
         }, 300);
     };
 
-    if(!searchData) {
+    if(!matchedBooks) {
         searchResultsRendered = <h3>Waiting for input.</h3>;
     }
 
@@ -46,15 +49,25 @@ const Search = props => {
         searchResultsRendered = <h3>No results found !</h3>;
     }
 
-    if(searchData && !errorFlag) {
-        searchResultsRendered = searchData.map(book => (<Book
-            key={book.id}
-            id={book.id}
-            title={book.title}
-            authors={book.authors}
-            shelf={book.shelf}
-            imageLink={book.imageLinks || ""} />)
-        );
+    if(matchedBooks && !errorFlag) {
+        searchResultsRendered = matchedBooks.map(matchedBook => {
+            let shelf ='none';
+
+            books.forEach(book => {
+                if(book.id === matchedBook.id) {
+                    shelf = book.shelf;
+                }
+            });
+
+            return (<Book
+                key={matchedBook.id}
+                id={matchedBook.id}
+                title={matchedBook.title}
+                authors={matchedBook.authors}
+                shelf={shelf}
+                imageLink={matchedBook.imageLinks || ""} />
+            );
+        });
     }
 
     return (
