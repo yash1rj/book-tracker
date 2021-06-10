@@ -1,34 +1,44 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import * as  BooksAPI from '../BooksAPI';
 
 const BooksContext = React.createContext({
     books: [],
-    fetchAllBooks: () => {},
-    dropDownChanged: () => {}
+    loading: false,
+    dropDownChanged: (shelf, id) => {}
 });
 
 export const BooksContextProvider = props => {
 
     const [bookListData, setBookListData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const fetchAllBooks = () => {
+    const fetchAllBooks = useCallback(() => {
+        setIsLoading(true);
         BooksAPI.getAll()
             .then(data => {
+                setIsLoading(false);
                 setBookListData(data);
             });
-    };
+    }, []);
+    
+    useEffect(() => {
+        fetchAllBooks();
+    }, [fetchAllBooks]);
 
-    const dropDownChanged = (value, id) => {
+    const dropDownChanged = (shelf, id) => {
         BooksAPI.update({
           id
-        }, value);
-      };
+        }, shelf)
+            .then(() => {
+                fetchAllBooks();
+            });
+    };
 
     return (
         <BooksContext.Provider 
             value={{
                 books: bookListData,
-                fetchAllBooks,
+                loading: isLoading,
                 dropDownChanged
             }}>
             {props.children}
