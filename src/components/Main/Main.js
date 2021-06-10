@@ -1,25 +1,23 @@
-import React, { useContext, useEffect} from 'react';
+import React, { useContext } from 'react';
 import './Main.css';
 
 import BookShelf from '../BookShelf/BookShelf';
 import { Link } from 'react-router-dom';
 import BooksContext from '../../store/books-context';
+import Spinner from '../Spinner/Spinner';
 
 const Main = props => {
 
-    const { books, fetchAllBooks } = useContext(BooksContext);
-
-    useEffect(() => {
-        fetchAllBooks();
-    }, [fetchAllBooks]);
+    const { books, loading } = useContext(BooksContext);
 
     return (
         <div className="list-books">
             <div className="list-books-title">
-                <h1>MyReads</h1>
+                <h1>Book-Tracker</h1>
             </div>
             <div className="list-books-content">
-                {books && (<div>
+                {loading && <Spinner />}
+                {books && !loading && (<div>
                     <BookShelf id="currentlyReading" title="Currently Reading" bookData={books} />
                     <BookShelf id="wantToRead" title="Want to Read" bookData={books} />
                     <BookShelf id="read" title="Read" bookData={books} />
