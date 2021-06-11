@@ -3,7 +3,7 @@ import './Spinner.css';
 
 const Spinner = () => {
     return (
-        <div className="lds-dual-ring" ></div>
+        <div className="spinnerContainer"><div className="lds-dual-ring" ></div></div>
     );
 };
 
