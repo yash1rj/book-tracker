@@ -8,7 +8,7 @@ import { BooksContextProvider } from './store/books-context';
 
 ReactDOM.render(
   <BooksContextProvider>
-    <BrowserRouter>
+    <BrowserRouter basename="/book-tracker/">
       <App />
     </BrowserRouter>
   </BooksContextProvider>,
